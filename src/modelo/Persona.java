@@ -20,7 +20,7 @@ public class Persona {
             this.setDni(dni);
         } catch (InvalidDni e) {
             
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         this.setFechaNacimiento(fechaNacimiento);
         this.setDireccion(calle, poblacion, cp);
@@ -40,14 +40,20 @@ public class Persona {
 
     public void setDni(String dni) throws InvalidDni {
         String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-        int numerosDni = Integer.parseInt(dni.substring(0, 8));
-        String letraDni = String.valueOf(dni.charAt(8));
-        String letraCorrespondida = String.valueOf(letras.charAt(numerosDni%23));
+    
+        if (dni.length() == 9) {
+            int numerosDni = Integer.parseInt(dni.substring(0, 8));
+            String letraDni = String.valueOf(dni.charAt(8));
+            String letraCorrespondida = String.valueOf(letras.charAt(numerosDni%23));
 
-        if (dni.length() == 9 && letraDni.equals(letraCorrespondida)) {
-            this.dni = dni;
+            if (letraDni.equals(letraCorrespondida)) {
+                this.dni = dni;
+            }
+            else throw new InvalidDni();
         }
         else throw new InvalidDni();
+
+        
         
     }
 

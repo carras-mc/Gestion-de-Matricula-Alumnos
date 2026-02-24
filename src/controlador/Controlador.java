@@ -59,6 +59,21 @@ public class Controlador {
                         alumnosPorEspecialidadAlfabeticamente();
                         break;
 
+                    case 3:
+
+                        alumnosPorEspecialidadEdad();
+                        break;
+
+                    case 4:
+
+                        numeroAlumnosPorEspecialidad();
+                        break;
+
+                    case 5:
+
+                        alumnoJovenMayor();
+                        break;
+
                     case 6:
 
                         listadoCompleto();
@@ -68,7 +83,7 @@ public class Controlador {
                         break;
                 }
 
-            } catch (InvalidDni e) {
+            } catch (InvalidDni | DateTimeParseException e ) {
                 System.out.println(e.getMessage());
             }
 
@@ -78,8 +93,54 @@ public class Controlador {
 
     }
 
+    private void alumnoJovenMayor() {
+        
+        List<Alumno> copiaLista = new LinkedList<>(listaAlumnos);
+
+        copiaLista.sort(Comparator.comparing(Alumno::getFechaNacimiento));
+
+        System.out.println("Alumno más joven : "+copiaLista.getFirst());
+        System.out.println("Alumno más mayor : "+copiaLista.getLast());        
+    }
+
+    private void numeroAlumnosPorEspecialidad() {
+
+        int img = 0;
+        int web = 0;
+        int coc = 0;
+
+        for (Alumno alumno : listaAlumnos) {
+
+            if (alumno.getCurso().equals("COC") ) {
+                coc++;
+            }
+            if (alumno.getCurso().equals("WEB")) {
+                web++;
+            }
+            if (alumno.getCurso().equals("IMG")) {
+                img++;
+            }
+        }
+        System.out.println("Cocina : " + coc + " alumnos matriculados");
+        System.out.println("Web : " + web + " alumnos matriculados");
+        System.out.println("Imagenes : " + img + " alumnos matriculados");
+    }
+
     private void listadoCompleto() {
         for (Alumno alumno : listaAlumnos) {
+            System.out.println(alumno);
+        }
+    }
+
+    private void alumnosPorEspecialidadEdad() {
+
+        List<Alumno> copiaLista = new LinkedList<>(listaAlumnos);
+
+        copiaLista.sort(
+                Comparator.comparing(Alumno::getCurso)
+                        .thenComparing(Alumno::getFechaNacimiento));
+
+        for (Alumno alumno : copiaLista) {
             System.out.println(alumno);
         }
     }
@@ -88,7 +149,9 @@ public class Controlador {
 
         List<Alumno> copiaLista = new LinkedList<>(listaAlumnos);
 
-        copiaLista.sort(Comparator.comparing(Alumno::getNombre));
+        copiaLista.sort(
+                Comparator.comparing(Alumno::getCurso)
+                        .thenComparing(Alumno::getNombre));
 
         for (Alumno alumno : copiaLista) {
             System.out.println(alumno);
@@ -99,23 +162,23 @@ public class Controlador {
         System.out.print("Nombre : ");
         String nombre = sc.nextLine();
         System.out.println();
-        System.out.println("DNI : ");
+        System.out.print("DNI : ");
         String dni = sc.nextLine();
         System.out.println();
-        System.out.println("Fecha nacimiento (YYYY-MM-DD) : ");
+        System.out.print("Fecha nacimiento (YYYY-MM-DD) : ");
         String fechaNacimiento = sc.nextLine();
         System.out.println();
-        System.out.println("Calle : ");
+        System.out.print("Calle : ");
         String calle = sc.nextLine();
         System.out.println();
-        System.out.println("Poblacion : ");
+        System.out.print("Poblacion : ");
         String poblacion = sc.nextLine();
         System.out.println();
-        System.out.println("Codigo postal : ");
+        System.out.print("Codigo postal : ");
         String cp = sc.nextLine();
         System.out.println();
-        System.out.println("Curso (COC, WEB, IMG) : ");
-        String curso = sc.nextLine();
+        System.out.print("Curso (COC, WEB, IMG) : ");
+        String curso = sc.nextLine().toUpperCase();
         System.out.println();
 
         Alumno alumno = new Alumno(nombre, dni, fechaNacimiento, calle, poblacion, cp, curso);
